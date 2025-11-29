@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ESP32 Robot Control</title>
+<style>
+  body { font-family: Arial, sans-serif; background: #111; color: #fff; text-align:center; }
+  h1 { color: #00ff00; margin-top: 20px; }
+  .btn { padding: 20px 40px; margin: 10px; font-size: 20px; cursor: pointer; border: none; border-radius: 10px; }
+  .forward { background: #4CAF50; } 
+  .back { background: #f44336; }
+  .left { background: #2196F3; } 
+  .right { background: #FF9800; }
+  .stop { background: #9E9E9E; }
+  #status { margin-top: 20px; font-size: 18px; }
+</style>
+<script>
+  // ضع هنا IP الخاص بالESP32 على شبكتك
+  const ESP32_IP = "192.168.1.105"; // غيّره حسب جهازك
+
+  function sendCommand(cmd) {
+    fetch(`http://${ESP32_IP}/${cmd}`)
+    .then(() => {
+      document.getElementById('status').innerText = 'Robot moving: ' + cmd;
+    })
+    .catch(() => {
+      document.getElementById('status').innerText = 'Cannot connect to ESP32';
+    });
+  }
+</script>
+</head>
+<body>
+<h1>ESP32 Robot Control</h1>
+<div>
+  <button class="btn forward" onclick="sendCommand('F')">Forward</button>
+  <button class="btn back" onclick="sendCommand('B')">Backward</button>
+  <button class="btn left" onclick="sendCommand('L')">Left</button>
+  <button class="btn right" onclick="sendCommand('R')">Right</button>
+  <button class="btn stop" onclick="sendCommand('S')">Stop</button>
+</div>
+<p id="status">Robot stopped</p>
+</body>
+</html>
